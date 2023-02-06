@@ -1,63 +1,90 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"sync"
+	"time"
 )
 
-func joinChannels(chs ...<-chan int) <-chan int {
-	mergedCh := make(chan int)
+func mergeChannels(ctx context.Context, chs ...chan int) <-chan int {
+	mergeCh := make(chan (int))
+	wg := sync.WaitGroup{}
+
+	for _, ch := range chs {
+		wg.Add(1)
+
+		go func(ch chan int) {
+			defer wg.Done()
+			for {
+				select {
+				case <-ctx.Done():
+					return
+				case el, ok := <-ch:
+					if ok {
+						mergeCh <- el
+					}
+				}
+			}
+
+		}(ch)
+	}
+
+	// for _, ch := range chs {
+	// 	wg.Add(1)
+
+	// 	go func(ch chan int) {
+	// 		defer wg.Done()
+
+	// 		for el := range ch {
+	// 			mergeCh <- el
+	// 		}
+	// 	}(ch)
+	// }
 
 	go func() {
-		wg := &sync.WaitGroup{}
-
-		wg.Add(len(chs))
-
-		for _, ch := range chs {
-			go func(ch <-chan int, wg *sync.WaitGroup) {
-				defer wg.Done()
-				for id := range ch {
-					mergedCh <- id
-				}
-			}(ch, wg)
-		}
-
+		defer close(mergeCh)
 		wg.Wait()
-		close(mergedCh)
 	}()
 
-	return mergedCh
+	return mergeCh
 }
 
 func main() {
+	ctx := context.Background()
+	ctx, cancel := context.WithTimeout(ctx, 15*time.Second)
+	// когда???
+	defer cancel()
 
-	a := make(chan int)
-	b := make(chan int)
-	c := make(chan int)
+	ch1 := make(chan (int))
+	ch2 := make(chan (int))
+	ch3 := make(chan (int))
 
 	go func() {
-		for _, num := range []int{1, 2, 3} {
-			a <- num
+		for _, el := range []int{1, 2, 3} {
+			ch1 <- el
 		}
-		close(a)
+
+		close(ch1)
 	}()
 
 	go func() {
-		for _, num := range []int{20, 10, 30} {
-			b <- num
+		for _, el := range []int{4, 5, 6} {
+			ch2 <- el
 		}
-		close(b)
+
+		close(ch2)
 	}()
 
 	go func() {
-		for _, num := range []int{300, 200, 100} {
-			c <- num
+		for _, el := range []int{40, 50, 60} {
+			ch3 <- el
 		}
-		close(c)
+
+		close(ch3)
 	}()
 
-	for num := range joinChannels(a, b, c) {
-		fmt.Println(num)
+	for el := range mergeChannels(ctx, ch1, ch2, ch3) {
+		fmt.Printf("%d %s", el, " : ")
 	}
-
 }
