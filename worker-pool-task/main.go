@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"errors"
+	"fmt"
 	"math/rand"
 	"sync"
 )
@@ -46,12 +47,15 @@ func start(n int, m int, tasks []Task) {
 			case taskChannel <- tasks[i]:
 			}
 		}
+		close(taskChannel)
 	}()
 
 	go func() {
 		var errorsCounter int = 0
 		for range errorChannel {
 			errorsCounter++
+			fmt.Println(errorsCounter)
+
 			if m == errorsCounter {
 				cancel()
 			}
@@ -72,7 +76,6 @@ func handleGoroutin(ctx context.Context, taskChannel chan Task, errorChannel cha
 			return
 		case task, ok := <-taskChannel:
 			if !ok {
-				close(taskChannel)
 				return
 			}
 			err := task.run()
