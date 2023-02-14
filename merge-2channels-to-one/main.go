@@ -53,7 +53,6 @@ func mergeChannels(ctx context.Context, chs ...chan int) <-chan int {
 func main() {
 	ctx := context.Background()
 	ctx, cancel := context.WithTimeout(ctx, 15*time.Second)
-	// когда???
 	defer cancel()
 
 	ch1 := make(chan (int))
