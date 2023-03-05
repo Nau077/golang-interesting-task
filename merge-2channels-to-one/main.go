@@ -52,7 +52,7 @@ func mergeChannels(ctx context.Context, chs ...chan int) <-chan int {
 
 func main() {
 	ctx := context.Background()
-	ctx, cancel := context.WithTimeout(ctx, 15*time.Second)
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
 	defer cancel()
 
 	ch1 := make(chan (int))
@@ -84,6 +84,6 @@ func main() {
 	}()
 
 	for el := range mergeChannels(ctx, ch1, ch2, ch3) {
-		fmt.Printf("%d %s", el, " : ")
+		fmt.Printf("%d %s", el, " , ")
 	}
 }
