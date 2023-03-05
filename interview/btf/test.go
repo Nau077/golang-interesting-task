@@ -12,12 +12,12 @@ func main() {
 func test() {
 	var wg sync.WaitGroup
 	wg.Add(3)
-	c := make(chan int, 3)
+	c := make(chan int, 1)
 	b := make(chan int)
 
 	go func() {
 		defer wg.Done()
-		c <- 1
+		c <- 7
 
 		close(c)
 	}()
@@ -36,6 +36,8 @@ func test() {
 			fmt.Println(el)
 		}
 	}()
+	// time.Sleep(time.Second)  // делает вывод 7:2
+	fmt.Println(<-c) // 2:7 но это undefined behiviour
 
 	wg.Wait()
 }

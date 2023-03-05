@@ -73,7 +73,7 @@ func Do(ctx context.Context, users []User) (map[string]int, error) {
 	return collected, nil
 }
 
-// package whatshowcode
+// package main
 
 // import (
 // 	"context"
@@ -82,11 +82,11 @@ func Do(ctx context.Context, users []User) (map[string]int, error) {
 // 	"time"
 // )
 
-// что показывает данный код
-// что можно улучшить
+// // что показывает данный код
+// // что можно улучшить
 
 // func main() {
-// 	fmt.Println(Do(context.Background(), []User{{"aaa"}, {"bbb"}, {"ccc"}, {"ddd"}, {"eeee"}}))
+// 	fmt.Println(Do(context.Background(), []User{{Name: "aaa"}, {Name: "bbb"}, {Name: "ccc"}, {Name: "ddd"}, {Name: "eeee"}}))
 // }
 
 // type User struct {
@@ -105,17 +105,17 @@ func Do(ctx context.Context, users []User) (map[string]int, error) {
 // 	wg.Add(len(users))
 
 // 	for _, u := range users {
-// 		var collected map[string]int
-
-// 		go func(u User) {
+// 		u := u
+// 		go func() {
 // 			defer wg.Done()
+
 // 			userID, err := fetchByName(ctx, u.Name)
 // 			if err != nil {
 // 				return
 // 			}
-
+// 			// fmt.Printf("%d %s", userID, " ")
 // 			collected[u.Name] = userID
-// 		}(u)
+// 		}()
 // 	}
 
 // 	wg.Wait()
