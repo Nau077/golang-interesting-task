@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"math/rand"
-	// "math/rand"
 )
 
 var s = []int{6, 123, 2, 1, 5659, 23}
@@ -17,7 +16,7 @@ func quicksort(a []int) []int {
 		return a
 	}
 
-	// base := a[len(a)-1]
+	// base := a[len(a)-1]  // тоже работает, но это худший случай будет всегда
 	index := rand.Intn(len(a))
 	base := a[index]
 	var left = []int{}
