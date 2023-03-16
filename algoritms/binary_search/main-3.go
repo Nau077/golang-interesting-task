@@ -13,12 +13,15 @@ func binarySearch(s []int, el int) (int, error) {
 		midIndex := (low + high) / 2
 		midEl := s[midIndex]
 
-		switch {
-		case midEl == el:
+		if el == midEl {
 			return midIndex, nil
-		case midEl > el:
+		}
+
+		if midEl > el {
 			high = midIndex - 1
-		case midEl < el:
+		}
+
+		if midEl < el {
 			low = midIndex + 1
 		}
 	}
@@ -27,11 +30,7 @@ func binarySearch(s []int, el int) (int, error) {
 }
 
 func main() {
-	s := []int{
-		1, 2, 5, 7, 8, 451, 472, 521, 711,
-	}
+	s := []int{2, 65, 455, 484, 522, 3226, 12322, 53234}
 
-	el := 711
-
-	fmt.Println(binarySearch(s, el))
+	fmt.Println(binarySearch(s, 522))
 }
