@@ -15,7 +15,7 @@ import (
 // 1 + 6 = 7
 
 // digital_root(942)
-// 9 + 4 + 2 = 15 ... 1 + 5 =6
+// 9 + 4 + 2 = 15 ... 1 + 5 = 6
 
 func DigitalRoot(n int) int {
 
