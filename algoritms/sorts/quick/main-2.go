@@ -11,6 +11,7 @@ func quicksort(s []int) []int {
 	if len(s) < 2 {
 		return s
 	}
+
 	base := rand.Intn(len(s))
 	var left = []int{}
 	var right = []int{}
@@ -35,7 +36,6 @@ func quicksort(s []int) []int {
 	result = append(result, right...)
 
 	return result
-
 }
 
 func main() {
