@@ -36,8 +36,8 @@ func test() {
 			fmt.Println(el)
 		}
 	}()
-	// time.Sleep(time.Second)  // делает вывод 7:2
-	fmt.Println(<-c) // 2:7 но это undefined behiviour
+	//	time.Sleep(time.Second) // делает вывод 2:7
+	fmt.Println(<-c) // 7:2 но это undefined behiviour
 
 	wg.Wait()
 }

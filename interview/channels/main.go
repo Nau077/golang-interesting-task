@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 func main() {
 	checkFirst()
 }
@@ -9,10 +11,11 @@ func checkFirst() {
 	chWriteD := make(chan int, 2)
 
 	go func() {
+		fmt.Println(123)
 		chWrite <- 556
 	}()
-
-	// go func() {
 	chWriteD <- 556
+	// go func() {
+
 	// }()
 }
