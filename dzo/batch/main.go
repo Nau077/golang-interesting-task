@@ -55,13 +55,15 @@ func GetByHeaders() map[int]header {
 	w.Add(length / threshold) // это 5 будет в данном случае - 1000/200
 
 	for start := 0; start < length; {
-		end := start + threshold
-		if end > length {
-			end = length
-		}
-		go GetBackupsEntitiesByIDs(h[start:end], ch, &w)
+		func(start int) {
+			end := start + threshold
+			if end > length {
+				end = length
+			}
+			go GetBackupsEntitiesByIDs(h[start:end], ch, &w)
 
-		start = end
+			start = end
+		}(start)
 	}
 
 	go func() {
