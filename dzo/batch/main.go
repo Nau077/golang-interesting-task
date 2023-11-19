@@ -65,8 +65,6 @@ func GetByHeaders() map[int]header {
 	}
 
 	go func() {
-		defer w.Done()
-
 		for h := range ch {
 			m.Store(h.id, h)
 		}
